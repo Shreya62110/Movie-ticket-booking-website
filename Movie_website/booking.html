@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Tickets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="booking-body">
+
+<header>
+    <h1 style="text-align:center;">Book Your Movie Ticket 🎬</h1>
+</header>
+
+<div style="text-align:center; margin-top:20px;">
+
+<form onsubmit="return bookTicket()">
+
+    <!-- NAME -->
+    <input type="text" id="name" placeholder="Your Name" required><br><br>
+
+    <!-- MOVIE -->
+    <select id="movie">
+<option>--select--</option>
+        <option>Kantara</option>
+        <option>Durandhar 1</option>
+        <option>Durandhar 2</option>
+        <option>lik</option>
+        <option>Dacoit</option>
+        <option>The Girlfriend</option>
+        <option>Rajasaab</option>
+        <option>Tere ishq mei</option>
+        <option>Ustad Bhaghat singh</option>
+        <option>Coolie</option>
+        <option>Interstellar</option>
+        <option>F1</option>
+    </select><br><br>
+
+    <!-- DATE -->
+    <input type="date" id="date" required><br><br>
+
+    <!-- SEATS -->
+    <h3>Select Seats</h3>
+
+    <div class="seats">
+        <div class="seat" onclick="selectSeat(this)">A1</div>
+        <div class="seat" onclick="selectSeat(this)">A2</div>
+        <div class="seat" onclick="selectSeat(this)">A3</div>
+        <div class="seat" onclick="selectSeat(this)">A4</div>
+
+        <div class="seat" onclick="selectSeat(this)">B1</div>
+        <div class="seat" onclick="selectSeat(this)">B2</div>
+        <div class="seat" onclick="selectSeat(this)">B3</div>
+        <div class="seat" onclick="selectSeat(this)">B4</div>
+    </div>
+
+    <p>Selected Seats: <span id="selectedSeats">None</span></p>
+    <p>Total Seats Selected: <span id="seatCount">0</span></p>
+
+    <!-- PAYMENT -->
+    <h3>Select Payment Mode</h3>
+
+    <input type="radio" name="payment" value="UPI"> UPI<br>
+    <input type="radio" name="payment" value="Card"> Card<br>
+    <input type="radio" name="payment" value="Cash"> Cash<br><br>
+
+    <button type="submit">Book Ticket</button>
+
+</form>
+
+<h3 id="message"></h3>
+
+</div>
+
+<script>
+// GLOBAL ARRAY
+var selected = [];
+
+// SEAT SELECTION
+function selectSeat(seat) {
+    var seatNo = seat.innerText;
+
+    if (selected.includes(seatNo)) {
+        selected = selected.filter(s => s !== seatNo);
+        seat.classList.remove("selected");
+    } else {
+        selected.push(seatNo);
+        seat.classList.add("selected");
+    }
+
+    // DISPLAY SEATS
+    document.getElementById("selectedSeats").innerText =
+        selected.length ? selected.join(", ") : "None";
+
+    // DISPLAY COUNT
+    document.getElementById("seatCount").innerText = selected.length;
+}
+
+// BOOKING FUNCTION
+function bookTicket() {
+
+    var name = document.getElementById("name").value;
+    var movie = document.getElementById("movie").value;
+
+    var payment = document.querySelector('input[name="payment"]:checked');
+
+    if (selected.length === 0) {
+        alert("Please select seats");
+        return false;
+    }
+
+    if (payment == null) {
+        alert("Please select payment mode");
+        return false;
+    }
+
+    // PRICE LOGIC
+    var pricePerTicket;
+
+    if (movie === "Durandhar 2") pricePerTicket = 250;
+    else if (movie === "Dacoit") pricePerTicket = 200;
+    else if (movie === "lik") pricePerTicket = 180;
+    else if (movie === "Rajasaab") pricePerTicket = 300;
+    else if (movie === "Kantara") pricePerTicket = 240;
+    else if (movie === "Durandhar 1") pricePerTicket = 260;
+    else if (movie === "Ustad Bhaghat singh") pricePerTicket = 150;
+    else if (movie === "The Girlfriend") pricePerTicket = 120;
+    else if (movie === "Tere ishq mei") pricePerTicket = 150;
+    else if (movie === "Interstellar") pricePerTicket = 200;
+    else if (movie === "Coolie") pricePerTicket = 150;
+    else if (movie === "F1") pricePerTicket = 300;
+    else pricePerTicket = 200;
+
+    var total = selected.length * pricePerTicket;
+
+    document.getElementById("message").innerHTML =
+        "🎉 Booking Confirmed!<br><br>" +
+        "Name: " + name + "<br>" +
+        "Movie: " + movie + "<br>" +
+        "Seats: " + selected.join(", ") + "<br>" +
+        "Total Seats: " + selected.length + "<br>" +
+        "Price per Ticket: ₹" + pricePerTicket + "<br>" +
+        "Total Amount: ₹" + total + "<br>" +
+        "Payment: " + payment.value;
+
+    return false;
+}
+</script>
+
+</body>
+</html>
